@@ -1,4 +1,4 @@
-# FileWrapper
+# File Wrapper
 
 ![screenshot](https://raw.githubusercontent.com/StanTsky/FileWrapper/master/ExampleRun.PNG)
 
