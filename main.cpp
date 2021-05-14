@@ -5,6 +5,7 @@
 * Assignment: HW 1
 * File:       main.cpp
 * Purpose:    C++ File Wrapper that works in both Linux and Windows
+*             - Will copy file test1.txt to test2.txt          
 --------------------------------------------------------------------
 */
 
@@ -90,12 +91,11 @@ void cp(const char * src, const char * dest)
 
 	// args[0] is the name of the program (historically)
 
-
 	FileWrapper infile(src, GENERIC_READ, OPEN_EXISTING);
 	if (GetLastError() == ERROR_FILE_NOT_FOUND)
 	{
 		printf("Could not find file!\n");
-		//system("pause");
+		//system("pause");              // should not be used
 		exit(EXIT_FAILURE);							// exit program
 		// return 1;
 	}
@@ -132,7 +132,7 @@ void cp(const char * src, const char * dest)
 int main()
 {
 	// Don't ask user for the file names
-	cp("test.txt", "test2.txt");
+	cp("test1.txt", "test2.txt");
 
 	//system("pause");
 	return 0;
