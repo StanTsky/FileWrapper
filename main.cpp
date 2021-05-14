@@ -1,51 +1,61 @@
+/*
+--------------------------------------------------------------------
+* Name:       Stan Turovsky
+* Class:      CPSC-35000 -- Operating Systems
+* Assignment: HW 1
+* File:       main.cpp
+* Purpose:    C++ File Wrapper that works in both Linux and Windows
+--------------------------------------------------------------------
+*/
+
 #ifdef __linux__
-#include <unistd.h> // read, write
-#include <errno.h> // ENOENT
-#include <fcntl.h> // O_RDONLY and O_WRONLY
-#include <stdio.h>
+  #include <unistd.h> // read, write
+  #include <errno.h>  // ENOENT
+  #include <fcntl.h>  // O_RDONLY and O_WRONLY
+  #include <stdio.h>
 #else
-// assume any other platform is Windows
-#include <Windows.h>
-#include <stdio.h>
+  // assume any other platform is Windows
+  #include <Windows.h>
+  #include <stdio.h>
 #endif
 
 class FileWrapper
 {
-#ifdef __linux__
-private:
-	// ... Linux FileWrapper code goes here
-	int _handle;
+  #ifdef __linux__
+  private:
+    // ... Linux FileWrapper code goes here
+    int _handle;
 
-public:
-	FileWrapper(const char * file, int flags, mode_t mode = 0700)
-	{
-		this->_handle = open(file, flags, mode);
-	}
+  public:
+    FileWrapper(const char * file, int flags, mode_t mode = 0700)
+    {
+      this->_handle = open(file, flags, mode);
+    }
 
-	~FileWrapper()
-	{
-		close(this->_handle);
-	}
+    ~FileWrapper()
+    {
+      close(this->_handle);
+    }
 
-	int getHandle() { return this->_handle; }
-#else
-private:
-	// ... Windows FileWrapper here
-	HANDLE _handle;
+    int getHandle() { return this->_handle; }
+  #else
+    private:
+      // ... Windows FileWrapper here
+      HANDLE _handle;
 
-public:
-	FileWrapper(const char * file, DWORD access, DWORD creation)
-	{
-		this->_handle = CreateFileA(file, access, 0, NULL, creation, FILE_ATTRIBUTE_NORMAL, NULL);
-	}
+    public:
+      FileWrapper(const char * file, DWORD access, DWORD creation)
+      {
+        this->_handle = CreateFileA(file, access, 0, NULL, creation, FILE_ATTRIBUTE_NORMAL, NULL);
+      }
 
-	~FileWrapper()
-	{
-		CloseHandle(this->_handle);
-	} // http://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
+      ~FileWrapper()
+      {
+        CloseHandle(this->_handle);
+      } // http://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
 
-	HANDLE getHandle() { return this->_handle; }
-#endif
+      HANDLE getHandle() { return this->_handle; }
+  #endif
 };
 
 void cp(const char * src, const char * dest)
@@ -121,7 +131,7 @@ void cp(const char * src, const char * dest)
 
 int main()
 {
-	// Don't ask user for file
+	// Don't ask user for the file names
 	cp("test.txt", "test2.txt");
 
 	//system("pause");
